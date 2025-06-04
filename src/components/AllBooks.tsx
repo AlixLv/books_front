@@ -13,7 +13,7 @@ interface Book {
 }
 
 
-const AllBooksContext = createContext({
+export const AllBooksContext = createContext({
     books: [], fetchBooks: () => {}
 })
 
@@ -31,11 +31,16 @@ export default function AllBooks(){
 
     return (
         <AllBooksContext.Provider value={{books, fetchBooks}}>
-            <ul>
-                {books?.map((book:Book) => (
-                    <li key={book.id}>{book.title} - {book.author}</li>
+            <div>
+                {books?.map((book:Book) => ( 
+                    <div key={book.id}>
+                        <h4>{book.title} by {book.author}</h4>
+                        <li>Category: {book.category}</li> 
+                        <li>Status: {book.status}</li>
+                        <li>Availability: {book.availability}</li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </AllBooksContext.Provider>
     )
 }

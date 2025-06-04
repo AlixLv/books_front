@@ -2,7 +2,6 @@
 
 import React, {useEffect, useState} from "react";
 import "./Header.css";
-import logo from "/logo.png";
 
 
 export default function Header() {
@@ -10,6 +9,7 @@ export default function Header() {
     const [isSmallScreen, setIsSmallScreen] = useState(false);
 
     useEffect(() => {
+        // setup fonction
         const handleMediaQueryChange = (mediaQuery) => {
             if (mediaQuery.matches){
                 setIsSmallScreen(true);
@@ -18,16 +18,17 @@ export default function Header() {
             }
         };
 
+        // dependencies
         const mediaQuery = window.matchMedia("(max-width: 700px)");
         
-        // Correct : addEventListener(event, callback)
+        // addEventListener(event, callback)
         mediaQuery.addEventListener("change", handleMediaQueryChange);
         
         // Appel initial pour définir l'état
         handleMediaQueryChange(mediaQuery);
 
         return () => {
-            // Correct : removeEventListener(event, callback)
+            // removeEventListener(event, callback)
             mediaQuery.removeEventListener("change", handleMediaQueryChange);
         };
     }, []);
@@ -38,18 +39,19 @@ export default function Header() {
     };
 
     return(
-        <header className="Header">
-            <img src="/logo.png" className="Logo" alt="Logo Books"></img>
-            {(!isSmallScreen || isNavVisible) && (
-                 <nav className="Nav">
-                <a href="/">Search</a>
-                <a href="/">Profile</a>
-                <a href="/">Logout</a>
-            </nav>
-            )}
-            <button onClick={toggleNav} className="Burger">
-                🍔
-            </button>
-        </header>
+      
+            <header className="Header">
+                <img src="/logo.png" className="Logo" alt="Logo Books"></img>
+                {(!isSmallScreen || isNavVisible) && (
+                    <nav className="Nav">
+                    <a href="/search">Search</a>
+                    <a href="/profile">Profile</a>
+                    <a href="/logout">Logout</a>
+                </nav>
+                )}
+                <button onClick={toggleNav} className="Burger">
+                    📚
+                </button>
+            </header>
     );
 }
