@@ -1,12 +1,14 @@
 'use client';
 import React, {useEffect, useState}  from "react";
 import Header from "../components/Header";
-import { Book } from "./utils/types";
+import { Book, BookSearch } from "./utils/types";
 import BookCard from "../components/BookCard";
+import SearchBook from "../components/SearchBook";
 
 
 export default function HomePage() {
   const [books, setBooks] = useState([])
+
   
   useEffect(() => {
       async function fetchBooks() {
@@ -19,7 +21,6 @@ export default function HomePage() {
 
   return (
     <>
-      <Header />
     <div>
       {books?.map((book:Book) => ( 
       <div key={book.id}>
