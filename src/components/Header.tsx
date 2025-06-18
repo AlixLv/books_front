@@ -1,7 +1,8 @@
 'use client';
 
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.css";
+import Link from "next/link";
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import { IconButton } from "@mui/material";
@@ -46,7 +47,7 @@ export default function Header({handleOpen}: HeaderProps) {
 
     return(
             <header className="Header">
-                <img src="/logo.png" className="Logo" alt="Logo Books"></img>
+                <Link href="/"><img src="/logo.png" className="Logo" alt="Logo Books"></img></Link>
                 {(!isSmallScreen || isNavVisible) && (
                     <nav className="Nav">
                     <IconButton onClick={handleOpen}><SearchIcon/></IconButton>
