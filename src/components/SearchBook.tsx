@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { BookSearch } from "../app/utils/types";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Button, Stack } from "@mui/material";
@@ -17,10 +17,17 @@ export default function SearchBook({handleClose}: SearchBookProps) {
         title: "",
         author: "",
         availability: "",
+        status: "",
         category: "",
         favourite: false,
     });
     const [checked, setChecked] = useState(false);
+    const [availability, setAvailability] = useState("");
+    const selectAvailabilityId = useId();
+    const [status, setStatus] = useState("");
+    const selectStatusId = useId();
+    const [category, setCategory] = useState("");
+    const selectCategoryId = useId();
     const router = useRouter()
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -29,35 +36,69 @@ export default function SearchBook({handleClose}: SearchBookProps) {
     console.log("title ", formState.title);
     console.log("author ", formState.author);
     console.log("availability ", formState.availability);
+    console.log("status ", formState.status);
     console.log("category ", formState.category);
     console.log("favourite ", formState.favourite);
-
+    
 
     function handleParams(formState:BookSearch) {
         const params = new URLSearchParams(searchParams);
-        let query:string="";
 
-        if (formState.title) {
-            params.set(query="title", formState.title);
+        if(formState.title && formState.title.trim() !== "") {
+            params.set("title", formState.title);
+        } else {
+            params.delete("title");
+        }
+
+        if(formState.author && formState.author.trim() !== "") {
+            params.set("author", formState.author)
+        } else {
+            params.delete("author");
+        }
+
+        if(formState.availability && formState.availability.trim() !== ""){
+            params.set("availability", formState.availability)
+        } else {
+            params.delete("availability");
         } 
-        else if(formState.author) {
-            params.set(query="author", formState.author)
+
+        if(formState.status && formState.status.trim() !== "") {
+            params.set("status", formState.status)
+        } else {
+            params.delete("status")
         }
-        else if (formState.availability){
-            params.set(query="availability", formState.availability)
+
+        if(formState.category && formState.category.trim() !==""){
+            params.set("category", formState.category)
+        }else {
+            params.delete("category");
+        } 
+
+        if(formState.favourite == true){
+            params.set("favourite", "True")
+        } else {
+            params.delete("favourite");
         }
-        else if (formState.category){
-            params.set(query="category", formState.category)
-        }
-        else {
-            params.delete(query);
-        }
+    
         replace(`${pathname}?${params.toString()}`);
     }
 
     const handleSearch = (key: string, value: any) => {
         setFormState((prev) => ({ ...prev, [key]: value }));
     };
+
+    const handleSearchValue = (inputValue:string, targetValue:string) => {
+        const newSearchValue = targetValue;
+        if (inputValue == "availability"){
+            setAvailability(newSearchValue);
+            handleSearch("availability", newSearchValue)
+        } else if (inputValue == "status"){
+            setStatus(newSearchValue);
+            handleSearch("status", newSearchValue)
+        } else {
+            handleSearch("category", newSearchValue)
+        }
+    }
 
     const handleFavourite = (key:string, checked:boolean) => {
         setFormState((prev) => ({...prev, [key]:checked}))
@@ -67,14 +108,13 @@ export default function SearchBook({handleClose}: SearchBookProps) {
         // permet d'obtenir directement la nouvelle value du switch
         const newCheckedValue = event.target.checked;
         setChecked(newCheckedValue);
-        console.log("HANDLE CHECK FAVOURITE ", checked)
         handleFavourite("favourite", newCheckedValue)
     };
 
     const handleSave = () => {
         handleParams(formState)
         handleClose();
-        router.push('/');
+        //router.push('/');
     }
 
     return (
@@ -87,28 +127,59 @@ export default function SearchBook({handleClose}: SearchBookProps) {
             onChange={(e) => {
                 handleSearch("title", e.target.value);
             }}
+            defaultValue={searchParams.get("title")?.toString()}
             />
+
             <label>Auteur</label>
             <input
             placeholder="Author"
             onChange={(e) => {
                 handleSearch("author", e.target.value);
             }}
+            defaultValue={searchParams.get("author")?.toString()}
             />
-            <label>Disponibilité</label>
-            <input
-            placeholder="Availability"
+
+            <label htmlFor={selectAvailabilityId}>Disponibilité</label>
+            <select
+            id={selectAvailabilityId}
+            name="selectAvailability"
             onChange={(e) => {
-                handleSearch("availability", e.target.value);
+                handleSearchValue("availability", e.target.value)
             }}
-            />
-            <label>Catégorie</label>
-            <input
-            placeholder="Category"
+            >
+                <option value="borrowed">Emprunté</option>
+                <option value="lent">Prêté</option>
+            <option value="bought">cheté</option>
+            </select>
+
+            <label htmlFor={selectStatusId}>Status</label>
+            <select
+            id={selectStatusId}
+            name="selectStatus"
             onChange={(e) => {
-                handleSearch("category", e.target.value);
+                handleSearchValue("status", e.target.value);
             }}
-            />
+            >
+                <option value="read">Lu</option>
+                <option value="unread">Non lu</option>
+            </select>
+
+            <label htmlFor={selectStatusId}>Catégorie</label>
+            <select
+            id={selectStatusId}
+            name="selectStatus"
+            onChange={(e) => {
+                handleSearchValue("category", e.target.value);
+            }}
+            >
+                <option value="essay">Essai</option>
+                <option value="fiction">Fiction</option>
+                <option value="autobiography">Autobiographie</option>
+                <option value="comics">Comics</option>
+                <option value="manga">Manga</option>
+                <option value="graphic_novel">Roman graphique</option>
+                <option value="fine_book">Beau-livre</option>
+            </select>
             <FormControlLabel control={<Switch checked={checked} onChange={handleCheckFavourite} color="secondary" />}label="favoris" />
             <Button onClick={handleSave}>Valider</Button>
         </Stack>
