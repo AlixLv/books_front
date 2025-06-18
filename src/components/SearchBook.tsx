@@ -147,6 +147,7 @@ export default function SearchBook({handleClose}: SearchBookProps) {
                 handleSearchValue("availability", e.target.value)
             }}
             >
+                <option value="none">Sélectionnez une option</option>
                 <option value="borrowed">Emprunté</option>
                 <option value="lent">Prêté</option>
             <option value="bought">cheté</option>
@@ -160,6 +161,7 @@ export default function SearchBook({handleClose}: SearchBookProps) {
                 handleSearchValue("status", e.target.value);
             }}
             >
+                <option value="non">Sélectionnez une option</option>
                 <option value="read">Lu</option>
                 <option value="unread">Non lu</option>
             </select>
@@ -172,6 +174,7 @@ export default function SearchBook({handleClose}: SearchBookProps) {
                 handleSearchValue("category", e.target.value);
             }}
             >
+                <option value="non">Sélectionnez une option</option>
                 <option value="essay">Essai</option>
                 <option value="fiction">Fiction</option>
                 <option value="autobiography">Autobiographie</option>
