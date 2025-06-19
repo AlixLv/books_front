@@ -13,25 +13,24 @@ interface SearchBookProps {
 
 
 export default function SearchBook({handleClose}: SearchBookProps) {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
+    const [checked, setChecked] = useState(false);
+    const selectAvailabilityId = useId();
+    const selectStatusId = useId();
+    const selectCategoryId = useId();
+
+
     const [formState, setFormState] = useState<BookSearch>({
         title: "",
         author: "",
         availability: "",
         status: "",
         category: "",
-        favourite: false,
+        favourite: searchParams.get("favourite") === "true",
     });
-    const [checked, setChecked] = useState(false);
-    const [availability, setAvailability] = useState("");
-    const selectAvailabilityId = useId();
-    const [status, setStatus] = useState("");
-    const selectStatusId = useId();
-    const [category, setCategory] = useState("");
-    const selectCategoryId = useId();
-    const router = useRouter()
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const { replace } = useRouter();
+
 
     console.log("title ", formState.title);
     console.log("author ", formState.author);
@@ -74,8 +73,8 @@ export default function SearchBook({handleClose}: SearchBookProps) {
             params.delete("category");
         } 
 
-        if(formState.favourite == true){
-            params.set("favourite", "True")
+        if(formState.favourite){
+            params.set("favourite", "true")
         } else {
             params.delete("favourite");
         }
@@ -87,28 +86,15 @@ export default function SearchBook({handleClose}: SearchBookProps) {
         setFormState((prev) => ({ ...prev, [key]: value }));
     };
 
-    const handleSearchValue = (inputValue:string, targetValue:string) => {
-        const newSearchValue = targetValue;
-        if (inputValue == "availability"){
-            setAvailability(newSearchValue);
-            handleSearch("availability", newSearchValue)
-        } else if (inputValue == "status"){
-            setStatus(newSearchValue);
-            handleSearch("status", newSearchValue)
-        } else {
-            handleSearch("category", newSearchValue)
-        }
-    }
-
-    const handleFavourite = (key:string, checked:boolean) => {
-        setFormState((prev) => ({...prev, [key]:checked}))
-    }
-
     const handleCheckFavourite = (event: React.ChangeEvent<HTMLInputElement>) => {
         // permet d'obtenir directement la nouvelle value du switch
         const newCheckedValue = event.target.checked;
-        setChecked(newCheckedValue);
-        handleFavourite("favourite", newCheckedValue)
+        setChecked(newCheckedValue)
+        setFormState((prev) => {
+            const newState = { ...prev, favourite: newCheckedValue };
+            // mise à jour de l'état de formState avec la nouvelle valeur
+            return newState;
+        });
     };
 
     const handleSave = () => {
@@ -119,46 +105,48 @@ export default function SearchBook({handleClose}: SearchBookProps) {
 
     return (
         <>
-        <Stack direction="column">
+        <Stack direction="column" spacing={2}>
             <label>Titre</label>
             <input
             name="titre"
             placeholder="Title"
+            value={formState.title}
             onChange={(e) => {
                 handleSearch("title", e.target.value);
             }}
-            defaultValue={searchParams.get("title")?.toString()}
             />
 
             <label>Auteur</label>
             <input
             placeholder="Author"
+            value={formState.author}
             onChange={(e) => {
                 handleSearch("author", e.target.value);
             }}
-            defaultValue={searchParams.get("author")?.toString()}
             />
 
             <label htmlFor={selectAvailabilityId}>Disponibilité</label>
             <select
             id={selectAvailabilityId}
             name="selectAvailability"
+            value={formState.availability}
             onChange={(e) => {
-                handleSearchValue("availability", e.target.value)
+                handleSearch("availability", e.target.value)
             }}
             >
                 <option value="none">Sélectionnez une option</option>
                 <option value="borrowed">Emprunté</option>
                 <option value="lent">Prêté</option>
-            <option value="bought">cheté</option>
+            <option value="bought">Acheté</option>
             </select>
 
             <label htmlFor={selectStatusId}>Status</label>
             <select
             id={selectStatusId}
             name="selectStatus"
+            value={formState.status}
             onChange={(e) => {
-                handleSearchValue("status", e.target.value);
+                handleSearch("status", e.target.value);
             }}
             >
                 <option value="non">Sélectionnez une option</option>
@@ -168,10 +156,11 @@ export default function SearchBook({handleClose}: SearchBookProps) {
 
             <label htmlFor={selectStatusId}>Catégorie</label>
             <select
-            id={selectStatusId}
-            name="selectStatus"
+            id={selectCategoryId}
+            name="selectCategory"
+            value={formState.category}
             onChange={(e) => {
-                handleSearchValue("category", e.target.value);
+                handleSearch("category", e.target.value);
             }}
             >
                 <option value="non">Sélectionnez une option</option>
