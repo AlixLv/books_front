@@ -4,10 +4,10 @@ import BookCard from "../components/BookCard";
 
 
 interface HomePageProps {
-  searParams: BookSearch;
+  searchParams: BookSearch;
 }
 
-async function fetchBooks(searchParams: HomePageProps["searParams"]) {
+async function fetchBooks(searchParams: HomePageProps["searchParams"]) {
   try {
     const params = new URLSearchParams();
     if (searchParams.title && searchParams.title.trim() !== "") {
@@ -46,7 +46,7 @@ async function fetchBooks(searchParams: HomePageProps["searParams"]) {
   }
 }
 
-export default async function HomePage({searchParams}: any) {
+export default async function HomePage({searchParams}: {searchParams:HomePageProps["searchParams"]}) {
   const books = await fetchBooks(searchParams);
 
   return (

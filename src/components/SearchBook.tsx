@@ -11,12 +11,11 @@ interface SearchBookProps {
   handleClose: () => void;
 }
 
-
 export default function SearchBook({handleClose}: SearchBookProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
-    const [checked, setChecked] = useState(false);
+    //const [checked, setChecked] = useState(false);
     const selectAvailabilityId = useId();
     const selectStatusId = useId();
     const selectCategoryId = useId();
@@ -28,7 +27,7 @@ export default function SearchBook({handleClose}: SearchBookProps) {
         availability: "",
         status: "",
         category: "",
-        favourite: searchParams.get("favourite") === "true",
+        favourite: searchParams.get("favourite") === "false",
     });
 
 
@@ -89,7 +88,7 @@ export default function SearchBook({handleClose}: SearchBookProps) {
     const handleCheckFavourite = (event: React.ChangeEvent<HTMLInputElement>) => {
         // permet d'obtenir directement la nouvelle value du switch
         const newCheckedValue = event.target.checked;
-        setChecked(newCheckedValue)
+        //setChecked(newCheckedValue)
         setFormState((prev) => {
             const newState = { ...prev, favourite: newCheckedValue };
             // mise à jour de l'état de formState avec la nouvelle valeur
@@ -172,7 +171,7 @@ export default function SearchBook({handleClose}: SearchBookProps) {
                 <option value="graphic_novel">Roman graphique</option>
                 <option value="fine_book">Beau-livre</option>
             </select>
-            <FormControlLabel control={<Switch checked={checked} onChange={handleCheckFavourite} color="secondary" />}label="favoris" />
+            <FormControlLabel control={<Switch checked={formState.favourite} onChange={handleCheckFavourite} color="secondary" />}label="favoris" />
             <Button onClick={handleSave}>Valider</Button>
         </Stack>
         </>
