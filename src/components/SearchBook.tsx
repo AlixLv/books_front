@@ -15,7 +15,6 @@ export default function SearchBook({handleClose}: SearchBookProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
-    //const [checked, setChecked] = useState(false);
     const selectAvailabilityId = useId();
     const selectStatusId = useId();
     const selectCategoryId = useId();
@@ -29,14 +28,6 @@ export default function SearchBook({handleClose}: SearchBookProps) {
         category: "",
         favourite: searchParams.get("favourite") === "false",
     });
-
-
-    console.log("title ", formState.title);
-    console.log("author ", formState.author);
-    console.log("availability ", formState.availability);
-    console.log("status ", formState.status);
-    console.log("category ", formState.category);
-    console.log("favourite ", formState.favourite);
     
 
     function handleParams(formState:BookSearch) {
@@ -88,7 +79,6 @@ export default function SearchBook({handleClose}: SearchBookProps) {
     const handleCheckFavourite = (event: React.ChangeEvent<HTMLInputElement>) => {
         // permet d'obtenir directement la nouvelle value du switch
         const newCheckedValue = event.target.checked;
-        //setChecked(newCheckedValue)
         setFormState((prev) => {
             const newState = { ...prev, favourite: newCheckedValue };
             // mise à jour de l'état de formState avec la nouvelle valeur
@@ -99,7 +89,6 @@ export default function SearchBook({handleClose}: SearchBookProps) {
     const handleSave = () => {
         handleParams(formState)
         handleClose();
-        //router.push('/');
     }
 
     return (

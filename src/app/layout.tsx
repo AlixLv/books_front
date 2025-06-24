@@ -12,9 +12,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
   return (
     <html lang="en">
@@ -25,7 +25,7 @@ export default function RootLayout({
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
-          >
+        >
             <Box sx={{  
               position: 'absolute',
               top: '50%',
@@ -36,7 +36,7 @@ export default function RootLayout({
               border: '2px solid #000',
               boxShadow: 24,
               p: 4}}>
-              <SearchBook handleClose={handleClose}/>
+            <SearchBook handleClose={handleClose}/>
             </Box>
           </Modal>
         {children}

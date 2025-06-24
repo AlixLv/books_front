@@ -46,8 +46,11 @@ async function fetchBooks(searchParams: HomePageProps["searchParams"]) {
   }
 }
 
-export default async function HomePage({searchParams}: {searchParams:HomePageProps["searchParams"]}) {
+
+export default async function HomePage(
+  {searchParams}: {searchParams:HomePageProps["searchParams"]}) {
   const books = await fetchBooks(searchParams);
+
 
   return (
     <>
