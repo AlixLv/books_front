@@ -6,11 +6,8 @@ import Link from "next/link";
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton, Box, Modal} from "@mui/material";
 
-interface HeaderProps {
-    handleOpen: () => void
-}
 
-export default function Header({handleOpen}:HeaderProps) {
+export default function Header() {
     const [isNavVisible, setIsNavVisible] = useState(true);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -49,7 +46,6 @@ export default function Header({handleOpen}:HeaderProps) {
                 <Link href="/"><img src="/logo.png" className="Logo" alt="Logo Books"></img></Link>
                 {(!isSmallScreen || isNavVisible) && (
                 <nav className="Nav">
-                    <IconButton onClick={handleOpen}><SearchIcon/></IconButton>
                     <a href="/profile">Profile</a>
                     <a href="/logout">Logout</a>
                 </nav>
