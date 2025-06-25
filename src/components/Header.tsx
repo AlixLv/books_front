@@ -4,14 +4,10 @@ import React, { useEffect, useState } from "react";
 import "./Header.css";
 import Link from "next/link";
 import SearchIcon from '@mui/icons-material/Search';
-import Button from '@mui/material/Button';
-import { IconButton } from "@mui/material";
+import { IconButton, Box, Modal} from "@mui/material";
 
-interface HeaderProps {
-    handleOpen: () => void
-}
 
-export default function Header({handleOpen}: HeaderProps) {
+export default function Header() {
     const [isNavVisible, setIsNavVisible] = useState(true);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -49,8 +45,7 @@ export default function Header({handleOpen}: HeaderProps) {
             <header className="Header">
                 <Link href="/"><img src="/logo.png" className="Logo" alt="Logo Books"></img></Link>
                 {(!isSmallScreen || isNavVisible) && (
-                    <nav className="Nav">
-                    <IconButton onClick={handleOpen}><SearchIcon/></IconButton>
+                <nav className="Nav">
                     <a href="/profile">Profile</a>
                     <a href="/logout">Logout</a>
                 </nav>
